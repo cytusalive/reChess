@@ -2,6 +2,7 @@ import pygame
 import sys
 from board import Pieces, Chessboard, index_to_coordinates, coordinates_to_index
 from rules import get_legal_moves, get_raw_moves, in_check
+from ai import evaluate_piece, evaluate_position, evaluate
 
 pygame.init()
 pygame.display.set_caption("Chess")
@@ -20,6 +21,7 @@ chessgame.load_position()
 
 dragging = False
 old_piece_index = None
+print(chessgame.board)
 
 while True:
     screen.fill(BGCOLOR)
@@ -58,6 +60,8 @@ while True:
                     dragging = False
                     chessgame.switch_turns()
 
+                    print(evaluate(chessgame.board))
+
                 else:
                     chessgame.board[old_square_index] = dragging_piece
                     dragging = False
@@ -70,8 +74,6 @@ while True:
         for square_index in range(len(chessgame.board)):
             if chessgame.board[square_index] == chessgame.color_to_move + 'K':
                 chessgame.incheck_squares.append(square_index)
-
-
 
     mouse = pygame.mouse.get_pressed()
     if mouse[0]:
