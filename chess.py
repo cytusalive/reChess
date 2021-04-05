@@ -21,7 +21,6 @@ chessgame.load_position()
 
 dragging = False
 old_piece_index = None
-print(chessgame.board)
 
 while True:
     screen.fill(BGCOLOR)
@@ -67,16 +66,9 @@ while True:
                     dragging = False
             old_piece_index = None
     
-    chessgame.incheck_squares = []
-
-    if in_check(chessgame.board, chessgame.color_to_move, chessgame.castle_available, chessgame.en_passant):
-
-        for square_index in range(len(chessgame.board)):
-            if chessgame.board[square_index] == chessgame.color_to_move + 'K':
-                chessgame.incheck_squares.append(square_index)
 
     mouse = pygame.mouse.get_pressed()
-    if mouse[0]:
+    if mouse:
         if dragging == True:
             mousex, mousey = pygame.mouse.get_pos()
             screen.blit(pieces.types[dragging_piece], (mousex-40, mousey-40))

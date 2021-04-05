@@ -1,4 +1,3 @@
-
 PIECE_VALUE = {'K': 100000, 'Q': 900, 'R': 500, 'B': 330, 'N': 320, 'P': 100}
 
 def evaluate_piece(position):
@@ -67,7 +66,7 @@ WHITE_POSITION_VALUE = {'K':   [-30,-40,-40,-50,-50,-40,-40,-30,
                                 5, -5,-10,  0,  0,-10, -5,  5,
                                 5, 10, 10,-20,-20, 10, 10,  5,
                                 0,  0,  0,  0,  0,  0,  0,  0],
-}
+                        }
 
 BLACK_POSITION_VALUE = {}
 for piece in WHITE_POSITION_VALUE:
@@ -93,3 +92,5 @@ def evaluate(position):
     return evaluate_piece(position) + evaluate_position(position) 
 
 #print(evaluate_position(['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR']))
+
+

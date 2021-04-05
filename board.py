@@ -1,5 +1,5 @@
 import pygame
-
+from rules import in_check, get_legal_moves
 DARK_SQUARE = (120, 60, 40)
 LIGHT_SQUARE = (200, 180, 120)
 HIGHLIGHT_SQUARE = (240, 240, 120, 180)
@@ -103,10 +103,30 @@ class Chessboard:
                     self.area.blit(self.pieces.types[self.board[square_index]], (x*self.screen_x/8, y*self.screen_y/8))
 
     def switch_turns(self):
+        
         if self.color_to_move == 'w':
             self.color_to_move = 'b'
         elif self.color_to_move == 'b':
             self.color_to_move = 'w'
+
+        # find checks
+        self.incheck_squares = []
+        can_move = True
+        if in_check(self.board, self.color_to_move, self.castle_available, self.en_passant):
+            can_move = False
+            for square_index in range(len(self.board)):
+                if self.board[square_index] == self.color_to_move + 'K':
+                    self.incheck_squares.append(square_index)
+        # find checkmates
+                if self.board[square_index]:
+                    if self.board[square_index][0] == self.color_to_move:
+                        moves = get_legal_moves(self.board, square_index, '', self.en_passant)
+                        print(moves)
+                        if moves:
+                            can_move = True
+        if can_move == False:
+            self.color_to_move = None
+            pygame.display.set_caption("Checkmate - Game over")
 
     def move_piece(self, old_piece_index, new_piece_index):
         self.highlight_squares = [old_piece_index, new_piece_index]

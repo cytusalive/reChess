@@ -287,10 +287,10 @@ def get_raw_moves(board_state, piece_index, castle='', en_passant=None):
                     if piece_index >= 6*8 and piece_index < 7*8:
                         if current_position[piece_index - 16] == '':
                             raw_moves.append(piece_index - 16)
-                if current_position[piece_index - 7]:
+                if piece_index % 8 != 7 and current_position[piece_index - 7]:
                     if current_position[piece_index - 7][0] == 'b':
                         raw_moves.append(piece_index - 7)
-                if current_position[piece_index - 9]:
+                if piece_index % 8 != 0 and current_position[piece_index - 9]:
                     if current_position[piece_index - 9][0] == 'b':
                         raw_moves.append(piece_index - 9)
                 if piece_index - 7 == en_passant or piece_index - 9 == en_passant:
@@ -302,10 +302,10 @@ def get_raw_moves(board_state, piece_index, castle='', en_passant=None):
                     if piece_index >= 1*8 and piece_index < 2*8:
                         if current_position[piece_index + 16] == '':
                             raw_moves.append(piece_index + 16)
-                if current_position[piece_index + 7]:
+                if piece_index % 8 != 0 and current_position[piece_index + 7]:
                     if current_position[piece_index + 7][0] == 'w':
                         raw_moves.append(piece_index + 7)
-                if current_position[piece_index + 9]:
+                if piece_index % 8 != 7 and current_position[piece_index + 9]:
                     if current_position[piece_index + 9][0] == 'w':
                         raw_moves.append(piece_index + 9)
                 if piece_index + 7 == en_passant or piece_index + 9 == en_passant:
