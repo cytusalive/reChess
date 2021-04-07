@@ -121,7 +121,7 @@ class Chessboard:
                 if self.board[square_index]:
                     if self.board[square_index][0] == self.color_to_move:
                         moves = get_legal_moves(self.board, square_index, '', self.en_passant)
-                        print(moves)
+                        #print(moves)
                         if moves:
                             can_move = True
         if can_move == False:
@@ -191,3 +191,4 @@ def index_to_coordinates(index):
 def coordinates_to_index(x, y):
     index = y * 8 + x
     return index
+

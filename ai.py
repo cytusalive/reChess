@@ -1,3 +1,7 @@
+from rules import get_legal_moves
+from board import Chessboard
+import copy
+
 PIECE_VALUE = {'K': 100000, 'Q': 900, 'R': 500, 'B': 330, 'N': 320, 'P': 100}
 
 def evaluate_piece(position):
@@ -94,3 +98,23 @@ def evaluate(position):
 #print(evaluate_position(['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR']))
 
 
+def ai(chessboard):
+    best_evaluation = 10000000
+    best_move = None
+    save_position = chessboard.board.copy()
+    for square_index in range(len(chessboard.board)):
+        if chessboard.board[square_index]:
+            if chessboard.board[square_index][0] == 'b':
+                print(chessboard.board[square_index])
+                legal_moves = get_legal_moves(chessboard.board, square_index, chessboard.castle_available, chessboard.en_passant)
+                print(legal_moves)
+                for move in legal_moves:
+                    chessboard.move_piece(square_index, move)
+                    evaluation = evaluate(chessboard.board)
+                    print(evaluation)
+                    if evaluation < best_evaluation:
+                        best_evaluation = evaluation
+                        best_move = (square_index, move)
+                    chessboard.board = save_position.copy()
+    return best_move
+    
