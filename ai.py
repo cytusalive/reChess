@@ -101,20 +101,23 @@ def evaluate(position):
 def ai(chessboard):
     best_evaluation = 10000000
     best_move = None
-    save_position = chessboard.board.copy()
-    for square_index in range(len(chessboard.board)):
-        if chessboard.board[square_index]:
-            if chessboard.board[square_index][0] == 'b':
-                print(chessboard.board[square_index])
-                legal_moves = get_legal_moves(chessboard.board, square_index, chessboard.castle_available, chessboard.en_passant)
-                print(legal_moves)
+    testboard = Chessboard(chessboard.area, chessboard.pieces)
+    copyboard(chessboard, testboard)
+    for square_index in range(len(testboard.board)):
+        if testboard.board[square_index]:
+            if testboard.board[square_index][0] == 'b':
+                legal_moves = get_legal_moves(testboard.board, square_index, testboard.castle_available, testboard.en_passant)
                 for move in legal_moves:
-                    chessboard.move_piece(square_index, move)
-                    evaluation = evaluate(chessboard.board)
-                    print(evaluation)
+                    testboard.move_piece(square_index, move)
+                    evaluation = evaluate(testboard.board)
                     if evaluation < best_evaluation:
                         best_evaluation = evaluation
                         best_move = (square_index, move)
-                    chessboard.board = save_position.copy()
+                    copyboard(chessboard, testboard)
+
     return best_move
     
+def copyboard(from_board, to_board):
+    to_board.board = from_board.board.copy()
+    to_board.castle_available = from_board.castle_available
+    to_board.en_passant = from_board.en_passant
