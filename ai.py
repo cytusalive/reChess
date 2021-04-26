@@ -97,8 +97,29 @@ def evaluate(position):
 
 #print(evaluate_position(['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', 'bP', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wP', 'wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR']))
 
+DEPTH = 2
 
 def ai(chessboard):
+    best_move = None
+    best_evaluation = 10000000
+    testboard = Chessboard(chessboard.area, chessboard.pieces)
+    copyboard(chessboard, testboard)
+    for square_index in range(len(testboard.board)):
+        if testboard.board[square_index]:
+            if testboard.board[square_index][0] == 'b':
+                legal_moves = get_legal_moves(testboard.board, square_index, testboard.castle_available, testboard.en_passant)
+                for move in legal_moves:
+                    testboard.move_piece(square_index, move)
+                    testboard.switch_turns()
+                    best_response = find_response(testboard)
+                    if best_response < best_evaluation:
+                        best_evaluation = best_response
+                        best_move = (square_index, move)
+                    copyboard(chessboard, testboard)
+    return best_move
+
+
+    '''
     best_evaluation = 10000000
     best_move = None
     testboard = Chessboard(chessboard.area, chessboard.pieces)
@@ -109,15 +130,43 @@ def ai(chessboard):
                 legal_moves = get_legal_moves(testboard.board, square_index, testboard.castle_available, testboard.en_passant)
                 for move in legal_moves:
                     testboard.move_piece(square_index, move)
+                    saveboard = Chessboard(chessboard.area, chessboard.pieces)
+                    copyboard(testboard, saveboard)
+                    for square_index in range(len(testboard.board)):
+                        if testboard.board[square_index]:
+                            if testboard.board[square_index][0] == 'w':
+                                legal_moves = get_legal_moves(testboard.board, square_index, testboard.castle_available, testboard.en_passant)
+                                for move in legal_moves:
+                                    testboard.move_piece(square_index, move)
+                                    evaluation = evaluate(testboard.board)
+                                    if evaluation < best_evaluation:
+                                        best_evaluation = evaluation
+                                        best_move = (square_index, move)
+                                    copyboard(saveboard, testboard)
+                    copyboard(chessboard, testboard)
+
+    return best_move
+    '''
+def copyboard(from_board, to_board):
+    to_board.board = from_board.board.copy()
+    to_board.castle_available = from_board.castle_available
+    to_board.en_passant = from_board.en_passant
+    to_board.color_to_move = from_board.color_to_move
+
+def find_response(chessboard):
+    best_evaluation = 10000000
+    best_move = None
+    testboard = Chessboard(chessboard.area, chessboard.pieces)
+    copyboard(chessboard, testboard)
+    for square_index in range(len(testboard.board)):
+        if testboard.board[square_index]:
+            if testboard.board[square_index][0] == testboard.color_to_move:
+                legal_moves = get_legal_moves(testboard.board, square_index, testboard.castle_available, testboard.en_passant)
+                for move in legal_moves:
+                    testboard.move_piece(square_index, move)
                     evaluation = evaluate(testboard.board)
                     if evaluation < best_evaluation:
                         best_evaluation = evaluation
                         best_move = (square_index, move)
                     copyboard(chessboard, testboard)
-
-    return best_move
-    
-def copyboard(from_board, to_board):
-    to_board.board = from_board.board.copy()
-    to_board.castle_available = from_board.castle_available
-    to_board.en_passant = from_board.en_passant
+    return best_evaluation
